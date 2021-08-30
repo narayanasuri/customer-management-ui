@@ -1,0 +1,75 @@
+.bio-container {
+    padding: 2rem 1rem;
+}
+
+.username-section {
+    justify-content: left;
+    margin: 2rem auto 1rem auto;
+    max-width: 800px;
+}
+
+.username-section > .customer-logo {
+    width: 75px;
+    height: auto;
+    margin-right: 1rem;
+}
+
+.username > span.active {
+    color: #1e8e3e;
+    padding-top: 0.2rem;
+}
+
+.username > span.inactive {
+    color: #696d71;
+    padding-top: 0.2rem;
+}
+
+.status-switch {
+    display: flex;
+    align-items: center;
+    padding: 0 !important;
+}
+
+.status-switch > input {
+    margin-right: 0.4rem !important;
+}
+
+.bio-elements {
+    display: flex;
+    font-size: 12px;
+    justify-content: left;
+    margin: auto;
+    max-width: 800px;
+}
+
+.bio-elements > span {
+    padding: 0.4rem;
+}
+
+@media only screen and (max-width: 768px) {
+    .bio-elements {
+        display: block;
+        font-size: 12px;
+        justify-content: center;
+    }
+    .bio-elements > span {
+        display: block;
+    }
+}
+
+.customer-details {
+    margin: 2rem auto 1rem auto;
+    max-width: 800px;
+}
+
+.section-container > h5 {
+    text-align: start;
+}
+
+.username > h4 {
+    margin: 0 !important;
+}
+
+.tags-container > span {
+    margin-right: 0.5rem;
+}
