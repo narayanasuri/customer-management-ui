@@ -8,13 +8,17 @@ const Breadcrumb = ({ items }) => {
         {items.map((item, index) => {
           if (index !== items.length - 1) {
             return (
-              <li className="breadcrumb-item">
+              <li key={item.title} className="breadcrumb-item">
                 <Link to={item.link}>{item.title}</Link>
               </li>
             );
           } else {
             return (
-              <li className="breadcrumb-item active" aria-current="page">
+              <li
+                key={item.title}
+                className="breadcrumb-item active"
+                aria-current="page"
+              >
                 {item.title}
               </li>
             );

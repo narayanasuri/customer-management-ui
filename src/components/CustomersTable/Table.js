@@ -21,8 +21,49 @@ const Table = ({
 }) => {
   const onRowSelect = (event, row) => {
     event.preventDefault();
-    if (row.status) {
-      viewCustomer(row._id);
+    if (!row) {
+      let parent = null;
+      if (event.target.tagName === 'DIV') {
+        parent = event.target.parentNode.parentNode;
+      } else if (event.target.tagName === 'TD') {
+        parent = event.target.parentNode;
+      }
+      if (parent && parent.classList.contains('enabled')) {
+        const ID = parent.getAttribute('customer-id');
+        if (ID) {
+          viewCustomer(ID);
+        }
+      }
+      return;
+    } else {
+      if (row.status) {
+        viewCustomer(row._id);
+      }
+    }
+  };
+
+  const onHeaderClick = (event) => {
+    event.preventDefault();
+    let header = null;
+    if (event.target.tagName === 'TH') {
+      header = event.target.getAttribute('field-header');
+    } else if (event.target.tagName === 'svg') {
+      header = event.target.parentNode.getAttribute('field-header');
+    } else if (event.target.tagName === 'path') {
+      header = event.target.parentNode.parentNode.getAttribute('field-header');
+    }
+    if (header) {
+      sort(header);
+    }
+  };
+
+  const onSwitchToggle = (e) => {
+    if (e.target.tagName !== 'INPUT') {
+      return;
+    } else {
+      const ID =
+        e.target.parentNode.parentNode.parentNode.getAttribute('customer-id');
+      toggleState(ID);
     }
   };
 
@@ -34,10 +75,7 @@ const Table = ({
           <input
             className="form-check-input"
             type="checkbox"
-            checked={row.status}
-            onChange={() => {
-              toggleState(row._id);
-            }}
+            defaultChecked={row.status}
           />
         </div>
       </td>
@@ -46,17 +84,17 @@ const Table = ({
 
   // Renders table cells
   const renderCell = (row, field) => {
-    return <td onDoubleClick={(e) => onRowSelect(e, row)}>{row[field]}</td>;
+    return <td>{row[field]}</td>;
   };
 
   // Renders the headers
   const makeHeaders = () => {
     return (
-      <thead>
+      <thead onClick={onHeaderClick}>
         <tr>
           {Object.keys(headers).map((header) => {
             return (
-              <th key={header} scope="col" onClick={() => sort(header)}>
+              <th key={header} field-header={header} scope="col">
                 {headers[header]}
                 {sortProps.field !== header ? null : sortProps.order ===
                   'ASC' ? (
@@ -76,10 +114,14 @@ const Table = ({
   // Renders the rows in the table
   const makeRows = () => {
     return (
-      <tbody>
+      <tbody onClick={onSwitchToggle} onDoubleClick={onRowSelect}>
         {rows.map((row) => {
           return (
-            <tr key={row._id} className={row.status ? 'enabled' : 'disabled'}>
+            <tr
+              key={row._id}
+              customer-id={row._id}
+              className={row.status ? 'enabled' : 'disabled'}
+            >
               {renderSwitchCell(row)}
               {renderCell(row, 'firstName')}
               {renderCell(row, 'lastName')}
